@@ -30,7 +30,13 @@ namespace ASPNETKata.Controllers
         // GET: Product/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var connectionString = "Server=localhost;Database=adventureworks;Uid=root;Pwd=1234";
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                var list = conn.Query<Product>("SELECT * FROM Product WHERE ProductId = @Id", new {Id = id});
+                return View(list.FirstOrDefault());
+            }
         }
 
         // GET: Product/Create
@@ -75,20 +81,30 @@ namespace ASPNETKata.Controllers
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
-            try
-            {
-                // TODO: Add update logic here
+            var name = collection["Name"];
 
-                return RedirectToAction("Index");
-            }
-            catch
+            var connectionString = "Server=localhost;Database=adventureworks;Uid=root;Pwd=1234";
+            using (var conn = new MySqlConnection(connectionString))
             {
-                return View();
+                conn.Open();
+
+
+                try
+                {
+                    conn.Execute("UPDATE product SET Name = @Name WHERE ProductId = @Id", new {Name = name, Id = id});
+
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    return View();
+                }
             }
+
         }
 
         // GET: Product/Delete/5
-        public ActionResult Delete(int id)
+                public ActionResult Delete(int id)
         {
             return View();
         }
@@ -97,15 +113,24 @@ namespace ASPNETKata.Controllers
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var name = collection["Name"];
 
-                return RedirectToAction("Index");
-            }
-            catch
+            var connectionString = "Server=localhost;Database=adventureworks;Uid=root;Pwd=1234";
+            using (var conn = new MySqlConnection(connectionString))
             {
-                return View();
+                conn.Open();
+
+
+                try
+                {
+                    conn.Execute("Delete from product WHERE ProductId = @Id", new {Id = id});
+
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    return View();
+                }
             }
         }
     }
