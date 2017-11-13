@@ -1,13 +1,7 @@
 using Dapper;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InversionofControl.Shared;
-using MySql.Data.MySqlClient;
 
 namespace ASPNETKata.Shared
 {
@@ -22,27 +16,12 @@ namespace ASPNETKata.Shared
 
         public IEnumerable<Product> GetProducts()
         {
-            return _connection.Query<Product>("SELECT * from product");
-        }
-
-        IEnumerable IProductRepository.GetProducts()
-        {
-            throw new NotImplementedException();
+            return _connection.Query<Product>("SELECT * from product ORDER BY ProductId DESC");
         }
 
         public void DeleteProduct(int productId)
         {
             _connection.Execute("DELETE FROM Product WHERE ProductId = @id", new { id = productId });
-        }
-
-        public void InsertProduct(Product prod)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateProduct(Product prod)
-        {
-            throw new NotImplementedException();
         }
 
         public void UpdateProduct(Product prod)
@@ -53,6 +32,11 @@ namespace ASPNETKata.Shared
         public void InsertProduct(Product prod)
         {
             _connection.Execute("INSERT into product (Name) values (@name)", new { name = prod.Name });
+        }
+
+        public Product GetDetails(int productId)
+        {
+            return _connection.Query<Product>("SELECT * FROM PRODUCT WHERE Productid = @id", new {id = productId }).FirstOrDefault();
         }
 
         /*

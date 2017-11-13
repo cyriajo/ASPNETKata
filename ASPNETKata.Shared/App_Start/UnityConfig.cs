@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using System.Configuration;
 using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace ASPNETKata.Shared.App_Start
 {
@@ -37,10 +38,10 @@ namespace ASPNETKata.Shared.App_Start
 
             // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
             // container.LoadConfiguration();
-            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            var connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
             container.RegisterType<System.Data.IDbConnection>(new InjectionFactory((x) =>
             {
-                var conn = new SqlConnection(connectionString);
+                var conn = new MySqlConnection(connectionString);
                 conn.Open();
                 return conn;
             }));

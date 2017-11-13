@@ -1,4 +1,4 @@
-﻿@model ASPNETKata.Models.Product
+﻿@model ASPNETKata.Shared.Product
 
 @{
     ViewBag.Title = "Edit";
@@ -6,10 +6,11 @@
 
 <h2>Edit</h2>
 
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Product</h4>
         <hr />
@@ -35,3 +36,7 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
