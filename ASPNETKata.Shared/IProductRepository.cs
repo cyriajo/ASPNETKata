@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using InversionofControl.Shared;
 
-namespace InversionofControl.Shared
+namespace ASPNETKata.Shared
 {
     public interface IProductRepository
     {
